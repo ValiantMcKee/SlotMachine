@@ -14,17 +14,33 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     public LinearLayout line;
+
     public Drawable cherry;
     public Drawable apple;
     public Drawable orange;
+
     public ImageView[] imageViews;
+
     public ImageView firstSlot;
     public ImageView secondSlot;
     public ImageView thirdSlot;
-    public UpdateFruit update;
+
+    public UpdateFirst updateOne;
+    public UpdateSecond updateTwo;
+    public UpdateThird updateThree;
+
     public int count;
+    public int count2;
+    public int count3;
+
     public Handler handler;
-    public boolean on;
+    public Handler handlerTwo;
+    public Handler handlerThree;
+
+    public boolean allOn;
+    public boolean onOne;
+    public boolean onTwo;
+    public boolean onThree;
 
 
     @Override
@@ -45,43 +61,90 @@ public class MainActivity extends AppCompatActivity {
         imageViews = new ImageView[3];
 
         handler = new Handler();
-        update = new UpdateFruit();
+        handlerTwo = new Handler();
+        handlerThree = new Handler();
 
-        on = false;
+        updateOne = new UpdateFirst();
+        updateTwo = new UpdateSecond();
+        updateThree = new UpdateThird();
+
+        allOn = false;
+        onOne = false;
+        onTwo = false;
+        onThree = false;
 
         count = 0;
+        count2 = 0;
+        count3 = 0;
 
     }
 
     public void buttonPressed(View v){
 
-        if (on) {
-            on = false;
-            handler.removeCallbacks(update);
+        if (allOn) {
+            allOn = false;
+            handler.removeCallbacks(updateOne);
         } else {
-            on = true;
-            handler.postDelayed(update, 1000);
+            allOn = true;
+            handler.post(updateOne);
+            handlerTwo.post(updateTwo);
+            handlerThree.post(updateThree);
         }
 
     }
 
-        private class UpdateFruit implements Runnable {
 
-            public void run() {
-                count = (count%3);
-                if (count == 0) {
-                    firstSlot.setImageDrawable(apple);
-                } else if (count == 1) {
-                    firstSlot.setImageDrawable(cherry);
-                } else if (count == 2) {
-                    firstSlot.setImageDrawable(orange);
+    private class UpdateFirst implements Runnable{
 
-                }
-                handler.postDelayed(update, 1000);
+        public void run() {
+            count = (count%3);
+            if (count == 0) {
+                firstSlot.setImageDrawable(apple);
+            } else if (count == 1) {
+                firstSlot.setImageDrawable(cherry);
+            } else if (count == 2) {
+                firstSlot.setImageDrawable(orange);
 
-                count++;
             }
+            handler.postDelayed(updateOne, 200);
+
+            count++;
         }
+    }
+    private class UpdateSecond implements Runnable{
+
+        public void run() {
+            count2 = (count2%3);
+            if (count2 == 0) {
+                secondSlot.setImageDrawable(apple);
+            } else if (count2 == 1) {
+                secondSlot.setImageDrawable(cherry);
+            } else if (count2 == 2) {
+                secondSlot.setImageDrawable(orange);
+
+            }
+            handlerTwo.postDelayed(updateTwo, 100);
+
+            count2++;
+        }
+    }
+    private class UpdateThird implements Runnable{
+
+        public void run() {
+            count3 = (count3%3);
+            if (count3 == 0) {
+                thirdSlot.setImageDrawable(apple);
+            } else if (count3 == 1) {
+                thirdSlot.setImageDrawable(cherry);
+            } else if (count3 == 2) {
+                thirdSlot.setImageDrawable(orange);
+
+            }
+            handlerThree.postDelayed(updateThree, 50);
+
+            count3++;
+        }
+    }
 
 
 
