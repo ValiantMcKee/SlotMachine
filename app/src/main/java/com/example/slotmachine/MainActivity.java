@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public int count;
     public int count2;
     public int count3;
+    public int countPress;
 
     public Handler handler;
     public Handler handlerTwo;
@@ -76,19 +77,28 @@ public class MainActivity extends AppCompatActivity {
         count = 0;
         count2 = 0;
         count3 = 0;
+        countPress = 0;
 
     }
 
     public void buttonPressed(View v){
 
-        if (allOn) {
-            allOn = false;
-            handler.removeCallbacks(updateOne);
-        } else {
+        if(countPress == 0) {
             allOn = true;
             handler.post(updateOne);
             handlerTwo.post(updateTwo);
             handlerThree.post(updateThree);
+            countPress ++;
+        } else if(countPress == 1){
+            handler.removeCallbacks(updateOne);
+            countPress++;
+        } else if(countPress == 2){
+            handlerTwo.removeCallbacks(updateTwo);
+            countPress++;
+        } else if(countPress == 3){
+            handlerThree.removeCallbacks(updateThree);
+            countPress = 0;
+            winCondition();
         }
 
     }
@@ -143,6 +153,11 @@ public class MainActivity extends AppCompatActivity {
             handlerThree.postDelayed(updateThree, 50);
 
             count3++;
+        }
+    }
+    public void winCondition(){
+        if((firstSlot.getDrawable().equals(secondSlot.getDrawable())) && (firstSlot.getDrawable().equals(thirdSlot.getDrawable()))){
+
         }
     }
 
